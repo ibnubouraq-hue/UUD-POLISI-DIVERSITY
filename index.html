@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Pasal Pidana Kepolisian</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 25px 0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .app-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .calculator-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .result-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #1a237e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eaf6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #3949ab;
+        }
+        
+        .category {
+            margin-bottom: 25px;
+        }
+        
+        .category-title {
+            background-color: #e8eaf6;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #283593;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .category-title:hover {
+            background-color: #c5cae9;
+        }
+        
+        .articles-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        
+        .article-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #3949ab;
+            transition: all 0.3s ease;
+        }
+        
+        .article-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .article-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .article-name {
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .article-details {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .article-details span {
+            display: block;
+            margin-bottom: 3px;
+        }
+        
+        .article-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .article-controls button {
+            background-color: #3949ab;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        
+        .article-controls button:hover {
+            background-color: #283593;
+        }
+        
+        .quantity {
+            font-weight: 600;
+            color: #1a237e;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .result-box {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #e8eaf6;
+        }
+        
+        .total-label {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .total-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a237e;
+        }
+        
+        .details-list {
+            list-style-type: none;
+        }
+        
+        .details-list li {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .details-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-name {
+            color: #555;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .buttons-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #3949ab;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #283593;
+        }
+        
+        .btn-secondary {
+            background-color: #e8eaf6;
+            color: #3949ab;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #c5cae9;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+        }
+        
+        .counter {
+            background-color: #3949ab;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .articles-container {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-gavel"></i> Kalkulator Pasal Pidana Kepolisian</h1>
+            <p>Hitung total denda dan hukuman penjara berdasarkan pasal-pasal yang dilanggar</p>
+        </header>
+        
+        <div class="app-container">
+            <section class="calculator-section">
+                <h2 class="section-title"><i class="fas fa-calculator"></i> Pilih Pasal yang Dilanggar</h2>
+                
+                <div class="category">
+                    <div class="category-title" onclick="toggleCategory('ringan')">
+                        <span>PIDANA RINGAN</span>
+                        <span class="counter" id="counter-ringan">0</span>
+                    </div>
+                    <div id="articles-ringan" class="articles-container">
+                        <!-- Pasal-pasal ringan akan diisi oleh JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="category">
+                    <div class="category-title" onclick="toggleCategory('sedang')">
+                        <span>PIDANA SEDANG</span>
+                        <span class="counter" id="counter-sedang">0</span>
+                    </div>
+                    <div id="articles-sedang" class="articles-container">
+                        <!-- Pasal-pasal sedang akan diisi oleh JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="category">
+                    <div class="category-title" onclick="toggleCategory('berat')">
+                        <span>PIDANA BERAT</span>
+                        <span class="counter" id="counter-berat">0</span>
+                    </div>
+                    <div id="articles-berat" class="articles-container">
+                        <!-- Pasal-pasal berat akan diisi oleh JavaScript -->
+                    </div>
+                </div>
+            </section>
+            
+            <section class="result-section">
+                <h2 class="section-title"><i class="fas fa-file-invoice-dollar"></i> Hasil Perhitungan</h2>
+                
+                <div class="result-box">
+                    <div class="total-label">Total Denda</div>
+                    <div class="total-value" id="total-denda">0</div>
+                </div>
+                
+                <div class="result-box">
+                    <div class="total-label">Total Hukuman Penjara</div>
+                    <div class="total-value" id="total-penjara">0 Bulan</div>
+                </div>
+                
+                <h3 class="section-title"><i class="fas fa-list"></i> Detail Pasal Terpilih</h3>
+                <ul class="details-list" id="selected-articles">
+                    <li>
+                        <span class="detail-name">Belum ada pasal yang dipilih</span>
+                        <span class="detail-value">0</span>
+                    </li>
+                </ul>
+                
+                <div class="buttons-container">
+                    <button class="btn btn-primary" onclick="calculateTotals()">
+                        <i class="fas fa-calculator"></i> Hitung Total
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetAll()">
+                        <i class="fas fa-redo"></i> Reset Semua
+                    </button>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>Kalkulator Pasal Pidana Kepolisian &copy; 2023 - Untuk tujuan ilustrasi hukum</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data pasal berdasarkan kategori
+        const pasalData = {
+            ringan: [
+                { id: 1, name: "TIDAK MEMILIKI KTP", denda: 1000, penjara: 10 },
+                { id: 2, name: "PENIPUAN TERHADAP WARGA", denda: 1500, penjara: 13 },
+                { id: 3, name: "MELAKUKAN PEMALAKAN TERHADAP WARGA", denda: 2500, penjara: 14 },
+                { id: 4, name: "MEMBERIKAN INFORMASI PALSU", denda: 3000, penjara: 16 },
+                { id: 5, name: "PENCEMARAN NAMA BAIK", denda: 3000, penjara: 10 },
+                { id: 6, name: "PENCEMARAN NAMA BAIK KEPOLISIAN", denda: 5000, penjara: 15 },
+                { id: 7, name: "MENGHAMBAT PENYELIDIKAN", denda: 3500, penjara: 10 }
+            ],
+            sedang: [
+                { id: 8, name: "PEMUKULAN TERHADAP WARGA", denda: 3500, penjara: 10 },
+                { id: 9, name: "MELAKUKAN PEMBEGALAN", denda: 5000, penjara: 15 },
+                { id: 10, name: "PENYOGOKAN TERHADAP PETUGAS", denda: 6000, penjara: 15 },
+                { id: 11, name: "BERADA DI ZONA MERAH", denda: 5000, penjara: 15 },
+                { id: 12, name: "MENGGUNAKAN ATRIBUT KEPOLISIAN", denda: 3000, penjara: 10 },
+                { id: 13, name: "MENCURI KENDARAAN WARGA", denda: 2000, penjara: 10 }
+            ],
+            berat: [
+                { id: 14, name: "MEMBAWA NARKOTIKA", denda: 8000, penjara: 15 },
+                { id: 15, name: "MEMBAWA BARANG ILEGAL", denda: 6000, penjara: 10 },
+                { id: 16, name: "PENGEDARAN SENJATA ILEGAL", denda: 7000, penjara: 15 },
+                { id: 17, name: "MEMBAWA UANG MERAH 1-1000", denda: 3000, penjara: 10 },
+                { id: 18, name: "MEMBAWA UANG MERAH 1001-10000", denda: 8000, penjara: 15 },
+                { id: 20, name: "PENGEDARAN BARANG ILEGAL DAN NARKOTIKA", denda: 5000, penjara: 20 },
+                { id: 21, name: "KEPEMILIKAN SENJATA LARAS PENDEK", denda: 4000, penjara: 10 },
+                { id: 22, name: "KEPEMILIKAN SENJATA LARAS MENENGAH", denda: 6000, penjara: 12 },
+                { id: 23, name: "KEPEMILIKAN SENJATA LARAS PANJANG", denda: 8000, penjara: 15 },
+                { id: 24, name: "MELAKUKAN PENYANDRAAN TERHADAP WARGA", denda: 8000, penjara: 15 },
+                { id: 25, name: "UPAYA MEMBUNUH PETUGAS/WARGA", denda: 10000, penjara: 20 },
+                { id: 26, name: "PENODONGAN TERHADAP WARGA/PETUGAS", denda: 6000, penjara: 10 },
+                { id: 27, name: "MELAKUKAN PENEMBAKAN TERHADAP WARGA/PETUGAS", denda: 7000, penjara: 10 },
+                { id: 28, name: "MELAKUKAN PENYANDRAAN TERHADAP INSTANSI/PETUGAS", denda: 8000, penjara: 15 },
+                { id: 29, name: "PERAMPOKAN WARUNG", denda: 15000, penjara: 20 },
+                { id: 30, name: "PERAMPOKAN BANK", denda: 30000, penjara: 40 },
+                { id: 31, name: "PEPERANGAN ANTARA KELOMPOK", denda: 8000, penjara: 15 },
+                { id: 32, name: "MENJADI POLISI GADUNGAN", denda: 20000, penjara: 10 },
+                { id: 33, name: "UPAYA PENGHILANGAN BARANG BUKTI", denda: 10000, penjara: 10 },
+                { id: 34, name: "UPAYA PENCULIKAN WARGA MAUPUN INSTANSI", denda: 20000, penjara: 20 },
+                { id: 45, name: "MEMBANTU KRIMINALISME", denda: 9000, penjara: 15 },
+                { id: 46, name: "MEMBAWA HEWAN YANG DILINDUNGI HIU/PENYU", denda: 5000, penjara: 10 },
+                { id: 47, name: "MEMBAWA BARANG ILEGAL", denda: 5000, penjara: 5 }
+            ]
+        };
+
+        // Menyimpan data pasal yang dipilih
+        let selectedArticles = {};
+        
+        // Inisialisasi aplikasi
+        function initApp() {
+            // Render semua pasal
+            renderArticles('ringan');
+            renderArticles('sedang');
+            renderArticles('berat');
+            
+            // Update counter
+            updateCategoryCounters();
+        }
+        
+        // Render pasal berdasarkan kategori
+        function renderArticles(category) {
+            const container = document.getElementById(`articles-${category}`);
+            const articles = pasalData[category];
+            
+            container.innerHTML = '';
+            
+            articles.forEach(article => {
+                const articleId = `${category}-${article.id}`;
+                const quantity = selectedArticles[articleId] || 0;
+                
+                const articleElement = document.createElement('div');
+                articleElement.className = 'article-item';
+                articleElement.innerHTML = `
+                    <div class="article-header">
+                        <div class="article-name">Pasal ${article.id}</div>
+                        <div class="quantity" id="quantity-${articleId}">${quantity}</div>
+                    </div>
+                    <div class="article-details">
+                        <span>${article.name}</span>
+                        <span>Denda: ${formatCurrency(article.denda)}</span>
+                        <span>Penjara: ${article.penjara} Bulan</span>
+                    </div>
+                    <div class="article-controls">
+                        <button onclick="decreaseArticle('${articleId}', ${article.denda}, ${article.penjara}, '${article.name}')">
+                            <i class="fas fa-minus"></i> Kurangi
+                        </button>
+                        <button onclick="increaseArticle('${articleId}', ${article.denda}, ${article.penjara}, '${article.name}')">
+                            <i class="fas fa-plus"></i> Tambah
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(articleElement);
+            });
+        }
+        
+        // Tambah jumlah pelanggaran pasal
+        function increaseArticle(articleId, denda, penjara, name) {
+            if (!selectedArticles[articleId]) {
+                selectedArticles[articleId] = 0;
+            }
+            
+            selectedArticles[articleId]++;
+            
+            // Update tampilan
+            document.getElementById(`quantity-${articleId}`).textContent = selectedArticles[articleId];
+            updateCategoryCounters();
+            updateSelectedArticlesList();
+        }
+        
+        // Kurangi jumlah pelanggaran pasal
+        function decreaseArticle(articleId, denda, penjara, name) {
+            if (selectedArticles[articleId] && selectedArticles[articleId] > 0) {
+                selectedArticles[articleId]--;
+                
+                // Update tampilan
+                document.getElementById(`quantity-${articleId}`).textContent = selectedArticles[articleId];
+                updateCategoryCounters();
+                updateSelectedArticlesList();
+            }
+        }
+        
+        // Update counter untuk setiap kategori
+        function updateCategoryCounters() {
+            // Reset counters
+            document.getElementById('counter-ringan').textContent = '0';
+            document.getElementById('counter-sedang').textContent = '0';
+            document.getElementById('counter-berat').textContent = '0';
+            
+            // Hitung total untuk setiap kategori
+            let ringanCount = 0;
+            let sedangCount = 0;
+            let beratCount = 0;
+            
+            for (const articleId in selectedArticles) {
+                const quantity = selectedArticles[articleId];
+                if (quantity > 0) {
+                    if (articleId.startsWith('ringan-')) {
+                        ringanCount += quantity;
+                    } else if (articleId.startsWith('sedang-')) {
+                        sedangCount += quantity;
+                    } else if (articleId.startsWith('berat-')) {
+                        beratCount += quantity;
+                    }
+                }
+            }
+            
+            // Update counter di UI
+            document.getElementById('counter-ringan').textContent = ringanCount;
+            document.getElementById('counter-sedang').textContent = sedangCount;
+            document.getElementById('counter-berat').textContent = beratCount;
+        }
+        
+        // Update daftar pasal yang dipilih
+        function updateSelectedArticlesList() {
+            const container = document.getElementById('selected-articles');
+            container.innerHTML = '';
+            
+            let hasSelected = false;
+            
+            for (const articleId in selectedArticles) {
+                const quantity = selectedArticles[articleId];
+                
+                if (quantity > 0) {
+                    hasSelected = true;
+                    
+                    // Parse articleId untuk mendapatkan data pasal
+                    const [category, id] = articleId.split('-');
+                    const article = pasalData[category].find(a => a.id === parseInt(id));
+                    
+                    if (article) {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            <span class="detail-name">Pasal ${article.id} (${article.name}) x${quantity}</span>
+                            <span class="detail-value">${formatCurrency(article.denda * quantity)}</span>
+                        `;
+                        container.appendChild(li);
+                    }
+                }
+            }
+            
+            if (!hasSelected) {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="detail-name">Belum ada pasal yang dipilih</span>
+                    <span class="detail-value">0</span>
+                `;
+                container.appendChild(li);
+            }
+        }
+        
+        // Hitung total denda dan penjara
+        function calculateTotals() {
+            let totalDenda = 0;
+            let totalPenjara = 0;
+            
+            for (const articleId in selectedArticles) {
+                const quantity = selectedArticles[articleId];
+                
+                if (quantity > 0) {
+                    // Parse articleId untuk mendapatkan data pasal
+                    const [category, id] = articleId.split('-');
+                    const article = pasalData[category].find(a => a.id === parseInt(id));
+                    
+                    if (article) {
+                        totalDenda += article.denda * quantity;
+                        totalPenjara += article.penjara * quantity;
+                    }
+                }
+            }
+            
+            // Update hasil di UI
+            document.getElementById('total-denda').textContent = formatCurrency(totalDenda);
+            document.getElementById('total-penjara').textContent = `${totalPenjara} Bulan`;
+            
+            // Update daftar pasal yang dipilih
+            updateSelectedArticlesList();
+        }
+        
+        // Reset semua pilihan
+        function resetAll() {
+            selectedArticles = {};
+            
+            // Reset semua quantity display
+            for (const category in pasalData) {
+                pasalData[category].forEach(article => {
+                    const articleId = `${category}-${article.id}`;
+                    const quantityElement = document.getElementById(`quantity-${articleId}`);
+                    if (quantityElement) {
+                        quantityElement.textContent = '0';
+                    }
+                });
+            }
+            
+            // Reset counters
+            updateCategoryCounters();
+            
+            // Reset hasil perhitungan
+            document.getElementById('total-denda').textContent = '0';
+            document.getElementById('total-penjara').textContent = '0 Bulan';
+            
+            // Reset daftar pasal
+            updateSelectedArticlesList();
+        }
+        
+        // Toggle kategori (show/hide)
+        function toggleCategory(category) {
+            const articlesContainer = document.getElementById(`articles-${category}`);
+            
+            if (articlesContainer.style.display === 'none') {
+                articlesContainer.style.display = 'grid';
+            } else {
+                articlesContainer.style.display = articlesContainer.style.display === 'grid' ? 'none' : 'grid';
+            }
+        }
+        
+        // Format mata uang
+        function formatCurrency(amount) {
+            return `Rp ${amount.toLocaleString('id-ID')}`;
+        }
+        
+        // Inisialisasi aplikasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
